@@ -11,7 +11,8 @@ function index({posts}) {
               <Card className="mb-3">
                 <Card.Body>
                   <Card.Title>{`${post.title.slice(0, 20)} ...`}</Card.Title>
-                  <Card.Text>{`${post.body.slice(0, 100)} ...`}</Card.Text>
+                          <Card.Text>{`${post.body.slice(0, 100)} ...`}</Card.Text>
+                          <a href="" className='btn btn-outline-secondary'>Read More</a>
                 </Card.Body>
               </Card>
             </Col>

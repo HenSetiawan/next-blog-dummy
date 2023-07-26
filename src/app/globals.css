@@ -22,3 +22,56 @@ body {
   margin-left: auto;
   background-color: #6c757d;
 }
+
+/* paginate css */
+.item {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.disabled-page {
+  color: #808e9b;
+}
+
+.active {
+  border: solid 1px #808e9b;
+  border-radius: 40px;
+  color: #808e9b;
+}
+
+.next {
+  font-size: 4px;
+  height: 60px;
+  position: absolute;
+  right: 0;
+  width: 250px;
+}
+
+.pagination {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  justify-content: center;
+  list-style-type: none;
+  position: relative;
+  width: 50%;
+  margin: auto;
+}
+
+.pagination-page {
+  font-weight: 700;
+}
+
+.previous {
+  font-size: 4px;
+  height: 60px;
+  left: 0;
+  position: absolute;
+  width: 250px;
+}

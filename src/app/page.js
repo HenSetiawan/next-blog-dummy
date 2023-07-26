@@ -1,19 +1,30 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getPost } from "@/services/api";
-import Blog from '../components/blog';
-import bannerImage from "../assets/images/banner_image.png";
+import Blog from "@/components/blog";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import ReactPaginate from "react-paginate";
+import bannerImage from "@/assets/images/banner_image.png";
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
 
-  const handleGetPost = async () => {
-    const posts = await getPost();
+  const handlePageClick = (event) => {
+    console.log(event.selected);
+    setPage(event.selected + 1);
+  };
+
+  const handleGetPost = async (page, perpage) => {
+    const posts = await getPost(page, perpage);
     setPosts(posts);
   };
 
   useEffect(() => {
-    handleGetPost();
-  }, []);
+    handleGetPost(page, 9);
+    // page count simulation
+    setPageCount(Math.ceil(100 / 12));
+  }, [page]);
   return (
     <main>
       <div
@@ -38,6 +49,24 @@ export default function Home() {
         </p>
       </div>
       <Blog posts={posts} />
+      <ReactPaginate
+        activeClassName={"item active "}
+        breakClassName={"item break-me "}
+        breakLabel={"..."}
+        containerClassName={"pagination"}
+        disabledClassName={"disabled-page"}
+        marginPagesDisplayed={2}
+        nextClassName={"item next "}
+        nextLabel={<AiOutlineArrowRight style={{ fontSize: 18, width: 150 }} />}
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+        pageClassName={"item pagination-page "}
+        pageRangeDisplayed={2}
+        previousClassName={"item previous"}
+        previousLabel={
+          <AiOutlineArrowLeft style={{ fontSize: 18, width: 150 }} />
+        }
+      />
     </main>
   );
 }
