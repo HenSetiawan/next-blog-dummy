@@ -1,6 +1,24 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
+body {
+}
+
 .bg-purple {
-    background-color: #8A2BE2 !important;
-    color: white !important;
+  background-color: #a84de7 !important;
+  color: white !important;
+}
+
+.banner {
+  height: 400px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horz-line {
+  width: 100px;
+  height: 3px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #6c757d;
 }
