@@ -1,1 +1,6 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+
+.bg-purple {
+    background-color: #8A2BE2 !important;
+    color: white !important;
+}
