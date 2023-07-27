@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from "next/link";
-import { Row, Col, Card, Button, Container } from "react-bootstrap";
+import { Row, Col, Card, Container } from "react-bootstrap";
 
 function index({posts}) {
   return (
