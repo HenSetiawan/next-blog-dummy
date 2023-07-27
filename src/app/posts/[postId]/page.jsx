@@ -2,15 +2,20 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { getPostById, getUserById } from "@/services/api";
+import { getPostById, getUserById, getCommentsByPostId } from "@/services/api";
 import { BsFillPersonFill } from "react-icons/bs";
 import { AiOutlineComment } from "react-icons/ai";
 import bannerImage from "@/assets/images/banner_image.png";
 
-function page({ params, searchParams }) {
+function page({ params }) {
   const [post, setPost] = useState({});
   const [user, setUser] = useState({});
+  const [comments, setCommnents] = useState([]);
 
+  const handleCommentsPost = async (id) => {
+    const comments = await getCommentsByPostId(id);
+    setCommnents(comments);
+  }
   const handleGetUser = async (id) => {
     const user = await getUserById(id);
     setUser(user);
@@ -19,6 +24,7 @@ function page({ params, searchParams }) {
     const post = await getPostById(id);
     setPost(post);
     handleGetUser(post.user_id);
+    handleCommentsPost(post.id);
   };
 
   useEffect(() => {
@@ -44,7 +50,7 @@ function page({ params, searchParams }) {
                 {user.name || "Admin (specific data not found in API)"}
               </p>
               <p className="ms-3">
-                <AiOutlineComment /> 3
+                <AiOutlineComment /> {comments.length}
               </p>
             </div>
             <h3>{post.title}</h3>
@@ -61,6 +67,14 @@ function page({ params, searchParams }) {
 
             <div className="commnents mt-4">
               <h3>Comments</h3>
+              {comments.map(comment => {
+                return (
+                  <div className="comment-box shadow p-2 mb-2">
+                    <p>{comment.name}</p>
+                    <p className="text-secondary">{comment.body}</p>
+                  </div>
+                );
+              })}
             </div>
           </Col>
         </Row>

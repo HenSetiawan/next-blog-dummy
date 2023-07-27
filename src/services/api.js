@@ -30,4 +30,16 @@ const getUserById = async (id) => {
   }
 };
 
-export { getPost, getPostById, getUserById };
+const getCommentsByPostId = async (id) => {
+  try {
+    const response = await fetch(
+      `https://gorest.co.in/public/v2/posts/${id}/comments`
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { getPost, getPostById, getUserById, getCommentsByPostId };
