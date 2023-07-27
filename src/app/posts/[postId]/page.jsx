@@ -1,13 +1,24 @@
 "use client";
 import React from "react";
+import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Image from "next/image";
-import { BsFillPersonFill } from 'react-icons/bs'
-import {AiOutlineComment} from 'react-icons/ai'
+import { getPostById } from "@/services/api";
+import { BsFillPersonFill } from "react-icons/bs";
+import { AiOutlineComment } from "react-icons/ai";
 import bannerImage from "@/assets/images/banner_image.png";
-import author from '@/assets/images/author.png'
+import author from "@/assets/images/author.png";
 
 function page({ params, searchParams }) {
+  const [post, setPost] = useState({});
+  const handleGetPost = async (id) => {
+    const post = await getPostById(id);
+    setPost(post);
+  };
+
+  useEffect(() => {
+    handleGetPost(params.postId);
+  }, []);
   return (
     <div className="bg-light-blue">
       <div
@@ -30,14 +41,9 @@ function page({ params, searchParams }) {
                 <AiOutlineComment /> 3
               </p>
             </div>
-            <h3>Ini Judul Post Yang Lumayan Panjang Sih Ya</h3>
+            <h3>{post.title}</h3>
             <p className="text-justify">
-              Sollers infit cubicularis. Illo terra pel. Synagoga defessus
-              sophismata. Theologus turpe adsuesco. Eligendi cado vis. Cito
-              molestiae ars. Vesica asper rerum. Facere adsuesco compello.
-              Crastinus adsum avarus. Combibo adicio neque. Ullam aduro sperno.
-              Enim curiositas aegrotatio. Aeneus anser virga. Candidus crastinus
-              ara. Sordeo valde toties.
+              {post.body}
             </p>
             <div className="d-flex author-container p-2">
               <Image width={100} src={author} />
@@ -52,7 +58,6 @@ function page({ params, searchParams }) {
             <div className="commnents mt-4">
               <h3>Comments</h3>
             </div>
-
           </Col>
         </Row>
       </Container>

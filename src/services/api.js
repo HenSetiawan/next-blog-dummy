@@ -8,4 +8,16 @@ const getPost = async (page, perpage) => {
   }
 };
 
-export { getPost };
+const getPostById = async (id) => {
+  try {
+    const response = await fetch(
+      `https://gorest.co.in/public/v2/posts/${id}`
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { getPost, getPostById };

@@ -5,7 +5,7 @@ import { Row, Col, Card, Button, Container } from "react-bootstrap";
 function index({posts}) {
   return (
     <Container>
-      <Row lg={3}>
+      <Row lg={3} xs={1}>
         {posts.map((post) => {
           return (
             <Col>
