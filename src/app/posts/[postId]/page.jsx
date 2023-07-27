@@ -2,18 +2,23 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Image from "next/image";
-import { getPostById } from "@/services/api";
+import { getPostById, getUserById } from "@/services/api";
 import { BsFillPersonFill } from "react-icons/bs";
 import { AiOutlineComment } from "react-icons/ai";
 import bannerImage from "@/assets/images/banner_image.png";
-import author from "@/assets/images/author.png";
 
 function page({ params, searchParams }) {
   const [post, setPost] = useState({});
+  const [user, setUser] = useState({});
+
+  const handleGetUser = async (id) => {
+    const user = await getUserById(id);
+    setUser(user);
+  };
   const handleGetPost = async (id) => {
     const post = await getPostById(id);
     setPost(post);
+    handleGetUser(post.user_id);
   };
 
   useEffect(() => {
@@ -35,23 +40,22 @@ function page({ params, searchParams }) {
           <Col>
             <div className="d-flex">
               <p>
-                <BsFillPersonFill /> Hendy Setiawan
+                <BsFillPersonFill />{" "}
+                {user.name || "Admin (specific data not found in API)"}
               </p>
               <p className="ms-3">
                 <AiOutlineComment /> 3
               </p>
             </div>
             <h3>{post.title}</h3>
-            <p className="text-justify">
-              {post.body}
-            </p>
+            <p className="text-justify">{post.body}</p>
             <div className="d-flex author-container p-2">
-              <Image width={100} src={author} />
               <div className="author-info ms-2">
-                <p>Name : Hendy Setiawan</p>
-                <p>Email : hendy@google.com</p>
-                <p>Gender : Pria</p>
-                <p>Status : Aktif</p>
+                <p>{`Name : ${
+                  user.name || "Admin (specific data not found in API)"
+                }`}</p>
+                <p>{`Email : ${user.email || "admin@gorest.com"}`}</p>
+                <p>{`Gender : ${user.gender || "Male"}`}</p>
               </div>
             </div>
 
