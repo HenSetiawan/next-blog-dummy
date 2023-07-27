@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from "next/link";
 import { Row, Col, Card, Button, Container } from "react-bootstrap";
 
 function index({posts}) {
@@ -11,8 +12,13 @@ function index({posts}) {
               <Card className="mb-3">
                 <Card.Body>
                   <Card.Title>{`${post.title.slice(0, 20)} ...`}</Card.Title>
-                          <Card.Text>{`${post.body.slice(0, 100)} ...`}</Card.Text>
-                          <a href="" className='btn btn-outline-secondary'>Read More</a>
+                  <Card.Text>{`${post.body.slice(0, 100)} ...`}</Card.Text>
+                  <Link
+                    className="btn btn-outline-secondary"
+                    href={`posts/${post.id}`}
+                  >
+                    Read More
+                  </Link>
                 </Card.Body>
               </Card>
             </Col>

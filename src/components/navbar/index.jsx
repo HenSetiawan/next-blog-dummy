@@ -28,8 +28,8 @@ function Navbar() {
           </button>
           <div className={`${collapse} navbar-collapse`} id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              <NavItem url="/#beranda">Home</NavItem>
-              <NavItem url="/#fitur">Users</NavItem>
+              <NavItem url="/">Home</NavItem>
+              <NavItem url="/users">Users</NavItem>
             </ul>
           </div>
         </div>
