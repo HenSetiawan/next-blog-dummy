@@ -30,6 +30,18 @@ const getUserById = async (id) => {
   }
 };
 
+const getUsers = async (page, perPage) => {
+    try {
+      const response = await fetch(
+        `https://gorest.co.in/public/v2/users?page=${page}&per_page=${perPage}`
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return error;
+    }
+}
+
 const getCommentsByPostId = async (id) => {
   try {
     const response = await fetch(
@@ -42,4 +54,4 @@ const getCommentsByPostId = async (id) => {
   }
 };
 
-export { getPost, getPostById, getUserById, getCommentsByPostId };
+export { getPost, getPostById, getUserById, getCommentsByPostId, getUsers };
