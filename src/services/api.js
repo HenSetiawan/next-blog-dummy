@@ -1,6 +1,10 @@
+const token = process.env.NEXT_PUBLIC_TOKEN;
+
 const getPost = async (page, perpage) => {
   try {
-    const response = await fetch(`https://gorest.co.in/public/v2/posts?page=${page}&per_page=${perpage}`);
+    const response = await fetch(
+      `https://gorest.co.in/public/v2/posts?page=${page}&per_page=${perpage}`
+    );
     const result = await response.json();
     return result;
   } catch (error) {
@@ -10,9 +14,7 @@ const getPost = async (page, perpage) => {
 
 const getPostById = async (id) => {
   try {
-    const response = await fetch(
-      `https://gorest.co.in/public/v2/posts/${id}`
-    );
+    const response = await fetch(`https://gorest.co.in/public/v2/posts/${id}`);
     const result = await response.json();
     return result;
   } catch (error) {
@@ -31,16 +33,33 @@ const getUserById = async (id) => {
 };
 
 const getUsers = async (page, perPage) => {
-    try {
-      const response = await fetch(
-        `https://gorest.co.in/public/v2/users?page=${page}&per_page=${perPage}`
-      );
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      return error;
-    }
-}
+  try {
+    const response = await fetch(
+      `https://gorest.co.in/public/v2/users?page=${page}&per_page=${perPage}`
+    );
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteUserById = async (idUser) => {
+  try {
+    const response = await fetch(
+      `https://gorest.co.in/public/v2/users/${idUser}`,
+      {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 
 const getCommentsByPostId = async (id) => {
   try {
@@ -54,4 +73,4 @@ const getCommentsByPostId = async (id) => {
   }
 };
 
-export { getPost, getPostById, getUserById, getCommentsByPostId, getUsers };
+export { getPost, getPostById, getUserById, getCommentsByPostId, getUsers, deleteUserById };

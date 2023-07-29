@@ -1,15 +1,19 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import bannerImage from "@/assets/images/banner_image.png";
-import { Container, Table, Col } from "react-bootstrap";
+import { Container, Table, Col, Modal, Button } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { getUsers } from "@/services/api";
+import { getUsers, deleteUserById } from "@/services/api";
 
 function page() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
+  const [userId, setUserId] = useState(null);
+  const [updated, setUpdated] = useState(0);
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   const handlePageClick = (event) => {
     console.log(event.selected);
@@ -21,9 +25,10 @@ function page() {
   };
   useEffect(() => {
     handleGetUsers(page, 10);
-  }, [page]);
+  }, [page, updated]);
   return (
     <div className="bg-light-blue">
+      <ToastContainer />
       <div
         style={{
           backgroundImage: `url(${bannerImage.src})`,
@@ -40,7 +45,7 @@ function page() {
       </div>
       <Container lg={1} className="mt-5 bg-white p-5">
         <Col lg={12}>
-          <Table striped bordered hover>
+          <Table responsive striped bordered hover>
             <thead>
               <tr>
                 <th>ID</th>
@@ -54,14 +59,22 @@ function page() {
             <tbody>
               {users.map((user) => {
                 return (
-                  <tr>
+                  <tr key={user.id}>
                     <td>{user.id}</td>
                     <td>{user.name}</td>
                     <td>{user.gender}</td>
                     <td>{user.email}</td>
                     <td>{user.status}</td>
                     <td>
-                      <button className="btn btn-sm btn-danger">Delete</button>
+                      <button
+                        onClick={() => {
+                          setUserId(user.id);
+                          setShowModalDelete(true);
+                        }}
+                        className="btn btn-sm btn-danger"
+                      >
+                        Delete
+                      </button>
                       <button className="btn btn-sm btn-warning ms-1">
                         Edit
                       </button>
@@ -93,6 +106,37 @@ function page() {
           />
         </Col>
       </Container>
+
+      <Modal
+        centered
+        show={showModalDelete}
+        onHide={() => setShowModalDelete(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure want delete the data?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModalDelete(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={async () => {
+              const response = await deleteUserById(userId);
+              if (response.status === 204) {
+                toast.success("Success delete the user !");
+              }
+              setUpdated((updated) => updated + 1);
+              setShowModalDelete(false);
+            }}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
