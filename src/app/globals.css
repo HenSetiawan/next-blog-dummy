@@ -34,9 +34,6 @@ body {
   width: 40px;
 }
 
-.disabled-page {
-  color: #808e9b;
-}
 
 .active {
   border: solid 1px #808e9b;
@@ -44,13 +41,6 @@ body {
   color: #808e9b;
 }
 
-.next {
-  font-size: 4px;
-  height: 60px;
-  position: absolute;
-  right: 0;
-  width: 250px;
-}
 
 .pagination {
   align-items: center;
@@ -63,18 +53,7 @@ body {
   width: 50%;
   margin: auto;
 }
-
-.pagination-page {
-  font-weight: 700;
-}
-
-.previous {
-  font-size: 4px;
-  height: 60px;
-  left: 0;
-  position: absolute;
-  width: 250px;
-}
+/* paginate end */
 
 .bg-light-blue {
   background-color: #F7FBFF;
