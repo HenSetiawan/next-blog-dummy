@@ -35,7 +35,12 @@ const getUserById = async (id) => {
 const getUsers = async (page, perPage) => {
   try {
     const response = await fetch(
-      `https://gorest.co.in/public/v2/users?page=${page}&per_page=${perPage}`
+      `https://gorest.co.in/public/v2/users?page=${page}&per_page=${perPage}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     const result = await response.json();
     return result;
@@ -51,10 +56,27 @@ const deleteUserById = async (idUser) => {
       {
         method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+const createNewUser = async (body) => {
+  try {
+    const response = await fetch(`https://gorest.co.in/public/v2/users/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    });
     return response;
   } catch (error) {
     return error;
@@ -73,4 +95,12 @@ const getCommentsByPostId = async (id) => {
   }
 };
 
-export { getPost, getPostById, getUserById, getCommentsByPostId, getUsers, deleteUserById };
+export {
+  getPost,
+  getPostById,
+  getUserById,
+  getCommentsByPostId,
+  getUsers,
+  deleteUserById,
+  createNewUser,
+};
