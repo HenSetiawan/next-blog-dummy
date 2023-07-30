@@ -24,7 +24,11 @@ const getPostById = async (id) => {
 
 const getUserById = async (id) => {
   try {
-    const response = await fetch(`https://gorest.co.in/public/v2/users/${id}`);
+    const response = await fetch(`https://gorest.co.in/public/v2/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const result = await response.json();
     return result;
   } catch (error) {
@@ -83,6 +87,23 @@ const createNewUser = async (body) => {
   }
 };
 
+const editUserById = async (id,body) => {
+  try {
+    const response = await fetch(`https://gorest.co.in/public/v2/users/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getCommentsByPostId = async (id) => {
   try {
     const response = await fetch(
@@ -103,4 +124,5 @@ export {
   getUsers,
   deleteUserById,
   createNewUser,
+  editUserById
 };

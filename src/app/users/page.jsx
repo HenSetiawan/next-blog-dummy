@@ -7,16 +7,23 @@ import bannerImage from "@/assets/images/banner_image.png";
 import { Container, Table, Col, Row, Modal, Button } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { getUsers, deleteUserById, createNewUser } from "@/services/api";
+import {
+  getUsers,
+  deleteUserById,
+  createNewUser,
+  getUserById,
+  editUserById,
+} from "@/services/api";
 
 function page() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [userId, setUserId] = useState(null);
   const [updated, setUpdated] = useState(0);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset, getValues } = useForm();
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalCreate, setShowModalCreate] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
 
   const handlePageClick = (event) => {
     setPage(event.selected + 1);
@@ -24,6 +31,38 @@ function page() {
   const handleGetUsers = async (page, perPage) => {
     const users = await getUsers(page, perPage);
     setUsers(users);
+  };
+
+  const handleGetUserById = async (id) => {
+    const user = await getUserById(id);
+    return user;
+  };
+
+  const handleEditUserById = async (id, data) => {
+    const body = {
+      name: data.userNameEdited,
+      email: data.userEmailEdited,
+      gender: data.userGenderEdited,
+      status: data.userStatusEdited,
+    };
+    try {
+      const response = await editUserById(id, body);
+      if (response.status === 200) {
+        toast.success('Success edit data user');
+        setUpdated((updated) => updated + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setDefaultValueModalEdit = (data) => {
+    let defaultValues = {};
+    defaultValues.userNameEdited = data.name;
+    defaultValues.userEmailEdited = data.email;
+    defaultValues.userGenderEdited = data.gender;
+    defaultValues.userStatusEdited = data.status;
+    reset({ ...defaultValues });
   };
 
   const onSubmit = async (data) => {
@@ -36,7 +75,7 @@ function page() {
       };
       const response = await createNewUser(body);
       if (response.status === 201) {
-        toast.success('Success create new user');
+        toast.success("Success create new user");
       }
       setShowModalCreate(false);
       setUpdated((updated) => updated + 1);
@@ -105,7 +144,15 @@ function page() {
                         >
                           Delete
                         </button>
-                        <button className="btn btn-sm btn-warning ms-1">
+                        <button
+                          onClick={async () => {
+                            setUserId(user.id);
+                            const detailUser = await handleGetUserById(user.id);
+                            setDefaultValueModalEdit(detailUser);
+                            setShowModalEdit(true);
+                          }}
+                          className="btn btn-sm btn-warning ms-1"
+                        >
                           Edit
                         </button>
                       </td>
@@ -167,7 +214,6 @@ function page() {
           </Button>
         </Modal.Footer>
       </Modal>
-
       <Modal
         centered
         show={showModalCreate}
@@ -233,6 +279,84 @@ function page() {
           </Button>
           <Button variant="primary" onClick={handleSubmit(onSubmit)}>
             Create
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* modal edit */}
+      <Modal
+        centered
+        show={showModalEdit}
+        onHide={() => setShowModalEdit(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-3">
+            <form>
+              <label htmlFor="user-name" className="form-label mt-2">
+                User Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                placeholder="user name"
+                {...register("userNameEdited")}
+              />
+              <label htmlFor="email" className="form-label mt-2">
+                Email
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="email"
+                {...register("userEmailEdited")}
+              />
+              <label htmlFor="gender" className="form-label mt-2">
+                Gender
+              </label>
+              <select
+                name="gender"
+                id="gender"
+                className="form-control"
+                {...register("userGenderEdited")}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+
+              <label htmlFor="status" className="form-label mt-2">
+                Status
+              </label>
+              <select
+                name="status"
+                id="status"
+                className="form-control"
+                {...register("userStatusEdited")}
+              >
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+              </select>
+            </form>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModalEdit(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={async () => {
+              const formValues = getValues();
+              console.log(formValues);
+              await handleEditUserById(userId, formValues);
+              setShowModalEdit(false);
+            }}
+          >
+            Edit
           </Button>
         </Modal.Footer>
       </Modal>
