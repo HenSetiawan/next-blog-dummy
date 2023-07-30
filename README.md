@@ -6,7 +6,7 @@ Untuk Menjalankan aplikasi pada komputer lokal anda:
 
  1. Clone atau download repository ini pada komputer anda
 
- 2. Ubah nama file .env copy.local menjadi .env.local
+ 2. Ubah nama file copy.env.local menjadi .env.local
 
 
  3. jalankan perintah di bawah ini
